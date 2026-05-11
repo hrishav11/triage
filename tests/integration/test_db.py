@@ -46,9 +46,7 @@ def test_tables_exist() -> None:
     }
     with engine.connect() as conn:
         result = conn.execute(
-            text(
-                "SELECT table_name FROM information_schema.tables " "WHERE table_schema = 'public'"
-            )
+            text("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'")
         )
         actual = {row[0] for row in result}
     missing = expected - actual

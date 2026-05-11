@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: triage_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-triage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-triage_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-triage}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - triage_pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-triage} -d ${POSTGRES_DB:-triage}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  triage_pgdata:
+    driver: local

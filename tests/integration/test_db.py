@@ -6,6 +6,7 @@ Run only these: pytest -v -m integration
 
 import pytest
 from sqlalchemy import text
+
 from triage.db import engine, get_session
 from triage.db.models import Disease, DiseasePhenotype, HpoTerm
 
